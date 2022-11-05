@@ -16,21 +16,17 @@ from time import sleep
 from telethon.tl.functions.messages import GetHistoryRequest
 from telethon import functions, types
 
-
 # Считываем учетные данные
-config = configparser.ConfigParser()
-config.read("config.ini")
 
-# Присваиваем значения внутренним переменным
-api_id   = config['Telegram']['api_id']
-api_hash = config['Telegram']['api_hash']
-username = config['Telegram']['username']
-print()
 
-mas=['brawlstars333333']#'odezhdAotYanaSaxova','DO_Tvortsov_v_Tvortse_Chat'
-client = TelegramClient('bos', api_id, api_hash)
-spisk=['me']
-client.start()
+
+	
+	
+
+
+
+
+#Юзеры в группе
 def iduser(client):
     for masiv in mas:
         participants = client.get_participants(masiv)
@@ -42,7 +38,7 @@ def iduser(client):
 #iduser(client)
 #client.send_message('me', 'hi')
 #print(client.get_me())
-print('ok')
+
 
 def dump_all_participants(channel):
 	offset_user = 0
@@ -61,15 +57,33 @@ def dump_all_participants(channel):
 	
 import time,random
 #Парсер сообщений группы Телеграм
-t=0
-s=client.iter_messages('topretsept')#zagotovka_na100
-a=0
-for i in s:
-	a+=1
-	if a==193:
-		i.text=str(i.text).replace('🔝 https://t.me/topretsept 🔝','https://t.me/vkusno_poest_recepti')
-		client.send_message('vkusno_poest_recepti', i)
-		print(f'Tovar{a}')
+
+def vkusno_poest(client):
+	t=0
+	s=client.iter_messages('topretsept')#zagotovka_na100
+	a=0
+	key=0
+	with open('vkusno.txt', 'r', encoding='utf-8') as file_object:
+	    key=file_object.read()
+	    key=int(key)
+	    file_object.close()
+
+
+	for i in s:
+		a+=1
+		if a==key:
+			i.text=str(i.text).replace('🔝 https://t.me/topretsept 🔝','https://t.me/vkusno_poest_recepti')
+			client.send_message('vkusno_poest_recepti', i)
+			print(f'Tovar{a}')
+
+			
+			with open('vkusno.txt', 'w', encoding='utf-8') as file:
+				file.write(f'{key+1}')
+				file.close()
+			client.run_until_disconnected()	
+
+
+
 			
 
 
@@ -89,21 +103,53 @@ for i in s:
 #	print(d.name)
 
 
-@client.on(events.NewMessage(chats = ['MihaAnarchyst','guraanton']))
-async def main(event):
-	await client.send_message('dasspi', event.message)
-	try:
-		print(event.message)
-	except UnicodeEncodeError:
-		pass
-	try:
-		print(event.message.from_id.user_id)
-	except AttributeError as e:
-		print(e)
+#@client.on(events.NewMessage(chats = ['MihaAnarchyst','guraanton']))
+#async def main(event):
+#	await client.send_message('dasspi', event.message)
+#	try:
+#		print(event.message)
+#	except UnicodeEncodeError:
+#		pass
+#	try:
+#		print(event.message.from_id.user_id)
+#	except AttributeError as e:
+#		print(e)
+
+
+#telethon_on(vkusno_poest())
+import schedule
+import time
+def timer(func):
+    
+    
+    #schedule.every(2).minutes.do(func)
+    #schedule.every().hour.do(job)
+    #schedule.every('2').day.do(func)
+    #schedule.every().monday.do(func)
+    #schedule.every().wednesday.at("13:15").do(job)
+    #schedule.every().minute.at(":17").do(job)
+    #schedule.every(4).days.at("02:00").do(func)
+    #schedule.every().days.at("13:30:00").do(func)
+    schedule.every().day.at("10:00").do(func)
+    schedule.every().day.at("18:01").do(func)
+
+    while True:
+        schedule.run_pending()
+    
+        time.sleep(1)
 
 
 
-client.run_until_disconnected()
-
-
+if __name__ == '__main__': 
+	config = configparser.ConfigParser()
+	config.read("config.ini")
+	api_id   = config['Telegram']['api_id']
+	api_hash = config['Telegram']['api_hash']
+	username = config['Telegram']['username']
+	client = TelegramClient('bos', api_id, api_hash)
+	client.start()
+	def main():
+		vkusno_poest(client)
+	
+	timer(main)
 
