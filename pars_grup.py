@@ -84,7 +84,7 @@ def add_user():
 			print('start')
 	
 			try:
-				us=random.randint(14,20)
+				us=random.randint(10,20)
 				client(InviteToChannelRequest(channel='vkusno_poest_recepti', users = f[:us]))
 				for i in f[:us]:	
 					f.remove(i)
@@ -269,7 +269,7 @@ def anekdot():
 
 #telethon_on(vkusno_poest())
 
-def timer(vkusno1,anekdot2):
+def timer(vkusno1):
     
     
     #schedule.every(2).minutes.do(func)
@@ -280,12 +280,12 @@ def timer(vkusno1,anekdot2):
     #schedule.every().minute.at(":17").do(job)
     #schedule.every(4).days.at("02:00").do(func)
     #schedule.every().days.at("13:30:00").do(func)
-	schedule.every().day.at("07:14").do(vkusno1)
-	schedule.every().day.at("11:13").do(vkusno1)
+	schedule.every().day.at("07:12").do(vkusno1)
+	schedule.every().day.at("11:12").do(vkusno1)
 	schedule.every().day.at("16:10").do(vkusno1)
-	schedule.every().day.at("07:17").do(anekdot2)
-	schedule.every().day.at("11:17").do(anekdot2)
-	schedule.every().day.at("16:15").do(anekdot2)
+	#schedule.every().day.at("07:17").do(anekdot2)
+	#schedule.every().day.at("11:17").do(anekdot2)
+	#schedule.every().day.at("16:15").do(anekdot2)
 
 
 	while True:
@@ -300,10 +300,10 @@ def main():
 if __name__ == '__main__': 
 	
 	
-	#timer(vkusno_poest,anekdot)
+	timer(main)
 	#anekdot()
 	#vkusno_poest()
-	iduser()
+	#iduser()
 	#add_user()
 
 	
