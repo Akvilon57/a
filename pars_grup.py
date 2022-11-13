@@ -280,8 +280,8 @@ def timer(vkusno1):
     #schedule.every().minute.at(":17").do(job)
     #schedule.every(4).days.at("02:00").do(func)
     #schedule.every().days.at("13:30:00").do(func)
-	schedule.every().day.at("07:12").do(vkusno1)
-	schedule.every().day.at("11:12").do(vkusno1)
+	schedule.every().day.at("07:14").do(vkusno1)
+	schedule.every().day.at("11:13").do(vkusno1)
 	schedule.every().day.at("16:10").do(vkusno1)
 	#schedule.every().day.at("07:17").do(anekdot2)
 	#schedule.every().day.at("11:17").do(anekdot2)
@@ -290,7 +290,7 @@ def timer(vkusno1):
 
 	while True:
 		schedule.run_pending()
-		
+		print('ok')
 		time.sleep(58)
 
 def main():
@@ -299,12 +299,19 @@ def main():
 
 if __name__ == '__main__': 
 	
-	
-	timer(main)
+	while True:
+		try:
+			timer(main)
+		except Exception as d:
+			print(d)
+		print('next')
+		time.sleep(120)
+
 	#anekdot()
 	#vkusno_poest()
 	#iduser()
 	#add_user()
+	
 
 	
 
