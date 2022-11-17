@@ -85,7 +85,13 @@ def add_user():
 	
 			try:
 				us=random.randint(10,20)
-				client(InviteToChannelRequest(channel='vkusno_poest_recepti', users = f[:us]))
+				for userss in f[:us]:
+					try:
+						client(InviteToChannelRequest(channel='vkusno_poest_recepti', users = userss))
+						print(userss)
+					except Exception as ow:
+						print(f'{userss}:{ow}')
+						time.sleep(us)
 				for i in f[:us]:	
 					f.remove(i)
 			except Exception as e:
@@ -173,11 +179,11 @@ def anekdot():
 	client = TelegramClient('bos', api_id, api_hash)
 	client.start()
 
-	spis=['AnekdotRu','AnekdotRu','AnekdotRu','AnekdotRu','anekdot18']
+	spis=['anekdot18']
 	number=random.randint(0,len(spis)-1)
 	channnel = spis[number]
 	print(channnel)
-
+	slova=['www','telegram','RUB','UDS','подписку','админы','Биткоины','Доход','Подпишись','рекламы','подписывайся','зарабатывай','боты','Присоединяйтесь','Телеграм','ru','ua','com']
 	k=0
 	t=0
 	s=client.iter_messages(channnel)
@@ -195,22 +201,34 @@ def anekdot():
 			vkusno.append(ii)
 		print(len(vkusno))
 
-	numb=len(vkusno)-1-key
-	i=vkusno[numb]
-
+	
 
 	try:
-		while True:
-			a=str(i.text)
-			if a.find('www')>=0:
-				numb-=1
-				key+=1
-				i=vkusno[numb]
+		go=True
+		while go:
+			numb=len(vkusno)-1-key
+			i=vkusno[numb]
+			#print('go')
+			i=str(i.text).replace('▶️','').replace(f'@{channnel}','https://t.me/anekdot_days')
+			if 'https://t.me/anekdot_days' not in i:
+				i=f'{i}\n\nhttps://t.me/anekdot_days'
+				print('net t.me')
+			key_word=False	
+			for sl in slova:
+				if sl in i:
+					key_word=True
+					print('iskluchenie')
+					break
+					
+			if key_word == False:
+				client.send_message('anekdot_days', i)
+				print(f'Tovar{numb}')
+				go=False
 			else:
-				i=str(i.text).replace('▶️','').replace(f'@{channnel}','https://t.me/anekdot_days')
-				
-		client.send_message('anekdot_days', i)
-		print(f'Tovar{numb}')	
+				key+=1
+
+
+
 	except Exception as e:
 		print(f'Error: {e}')
 		key+=1
@@ -290,22 +308,33 @@ def timer(vkusno1):
 
 	while True:
 		schedule.run_pending()
-		print('ok')
+		
 		time.sleep(58)
 
 def main():
-	vkusno_poest()
-	add_user()
+	try:
+		vkusno_poest()
+	except Exception as ds:
+		print(f'vkusno_poest : {ds}')
+	try:
+		add_user()
+	except Exception as d:
+		print(f'add_user :{d}')
 
 if __name__ == '__main__': 
+	try:
+		vkusno_poest()
+	except Exception as ds:
+		print(f'vkusno_poest : {ds}')
+	try:
+		add_user()
+	except Exception as d:
+		print(f'add_user :{d}')
 	
+	print('hi')
 	while True:
-		try:
-			timer(main)
-		except Exception as d:
-			print(d)
-		print('next')
-		time.sleep(120)
+		timer(main)
+		time.sleep(1200)
 
 	#anekdot()
 	#vkusno_poest()
