@@ -87,7 +87,7 @@ def add_user():
 				us=random.randint(10,20)
 				for userss in f[:us]:
 					try:
-						client(InviteToChannelRequest(channel='vkusno_poest_recepti', users = userss))
+						client(InviteToChannelRequest(channel='vkusno_poest_recepti', users = [userss]))
 						print(userss)
 					except Exception as ow:
 						print(f'{userss}:{ow}')
