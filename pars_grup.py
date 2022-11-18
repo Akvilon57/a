@@ -131,42 +131,63 @@ def dump_all_participants(channel):
 #Парсер сообщений группы Телеграм
 
 def vkusno_poest():
+
 	client = TelegramClient('bos', api_id, api_hash)
 	client.start()
 	t=0
-	s=client.iter_messages('topretsept')#zagotovka_na100
+	global s
+	ss=0
+	pov=True
+	try:
+		s=client.iter_messages('topretsept')#zagotovka_na100
+	except Exception:
+		while pov:
+			if ss<20:
+				try:
+					s=client.iter_messages('topretsept')
+					pov=False
+				
+				except Exception:
+					ss+=1
+			else:
+				s=0
+				pov=False
+
+
 	a=0
 	k=0
 	key=0
 	vkusno=[]
-	print(type(s))
-	with open('vkusno.txt', 'r', encoding='utf-8') as file_object:
-	    key=file_object.read()
-	    key=int(key)
-	    file_object.close()
+	if s!=0:
+		with open('vkusno.txt', 'r', encoding='utf-8') as file_object:
+		    key=file_object.read()
+		    key=int(key)
+		    file_object.close()
 
-	if len(vkusno)==0:
-		for ii in s:
-			vkusno.append(ii)
-		print(len(vkusno))
+		if len(vkusno)==0:
 
-	numb=len(vkusno)-1-key
-	i=vkusno[numb]
-	
-	
-	try:
-		i.text=str(i.text).replace('🔝 https://t.me/topretsept 🔝','https://t.me/vkusno_poest_recepti').replace('🔝https://t.me/topretsept🔝','https://t.me/vkusno_poest_recepti')
-		client.send_message('vkusno_poest_recepti', i)
-		print(f'Tovar{numb}')
+			for ii in s:
+				vkusno.append(ii)
+			print(len(vkusno))
+
+		numb=len(vkusno)-1-key
+		i=vkusno[numb]
 		
-	except Exception as e:
-		print(f'Error: {e}')
-		key+=1
+		
+		try:
+			i.text=str(i.text).replace('🔝 https://t.me/topretsept 🔝','https://t.me/vkusno_poest_recepti').replace('🔝https://t.me/topretsept🔝','https://t.me/vkusno_poest_recepti')
+			client.send_message('vkusno_poest_recepti', i)
+			print(f'Tovar{numb}')
+			
+		except Exception as e:
+			print(f'Error: {e}')
+			key+=1
+		
+						
+		with open('vkusno.txt', 'w', encoding='utf-8') as file:
+			file.write(f'{key+1}')
+			file.close()
 	
-					
-	with open('vkusno.txt', 'w', encoding='utf-8') as file:
-		file.write(f'{key+1}')
-		file.close()
 				
 
 	print('disconnect')
@@ -287,8 +308,7 @@ def anekdot():
 
 #telethon_on(vkusno_poest())
 
-def timer(vkusno1):
-    
+def timer(vkusno1,add):
     
     #schedule.every(2).minutes.do(func)
     #schedule.every().hour.do(job)
@@ -301,39 +321,31 @@ def timer(vkusno1):
 	schedule.every().day.at("07:14").do(vkusno1)
 	schedule.every().day.at("11:13").do(vkusno1)
 	schedule.every().day.at("16:10").do(vkusno1)
-	#schedule.every().day.at("07:17").do(anekdot2)
-	#schedule.every().day.at("11:17").do(anekdot2)
-	#schedule.every().day.at("16:15").do(anekdot2)
+	schedule.every().day.at("07:17").do(add)
+	schedule.every().day.at("11:17").do(add)
+	schedule.every().day.at("16:15").do(add)
 
 
 	while True:
 		schedule.run_pending()
-		
 		time.sleep(58)
 
-def main():
+def main_vkus():
 	try:
 		vkusno_poest()
 	except Exception as ds:
 		print(f'vkusno_poest : {ds}')
+
+def main_add():		
 	try:
 		add_user()
 	except Exception as d:
 		print(f'add_user :{d}')
 
-if __name__ == '__main__': 
-	try:
-		vkusno_poest()
-	except Exception as ds:
-		print(f'vkusno_poest : {ds}')
-	try:
-		add_user()
-	except Exception as d:
-		print(f'add_user :{d}')
-	
+if __name__ == '__main__': 	
 	print('hi')
 	while True:
-		timer(main)
+		timer(main_vkus,main_add)
 		time.sleep(1200)
 
 	#anekdot()
