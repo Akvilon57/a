@@ -131,24 +131,57 @@ def dump_all_participants(channel):
 #Парсер сообщений группы Телеграм
 
 def vkusno_poest():
-
-	client = TelegramClient('bos', api_id, api_hash)
-	client.start()
-	t=0
 	global s
+	tclient=True
+	ts=0
+	while tclient:
+		try:
+			client = TelegramClient('bos', api_id, api_hash)
+			tclient=False
+		except Exception as sss:
+			print(f'TelegramClient : {sss}')
+			time.sleep(20)
+			ts+=1
+			if ts==30:
+				print('limit TelegramClient')
+				s=0
+				tclient=False
+
+	tstart=True
+	tst=0
+	while tstart:
+		try:
+			client.start()
+			tstart=False
+		except Exception as sss:
+			print(f'client.start : {sss}')
+			time.sleep(20)
+			tst+=1
+			if tst==30:
+				print('limit client.start')
+				s=0
+				tstart=False
+
+
+
+	
+	t=0
+	
 	ss=0
 	pov=True
 	try:
 		s=client.iter_messages('topretsept')#zagotovka_na100
-	except Exception:
-		while pov:
+	except Exception as dd:
+		print(f'Error client.iter_messages : {dd}')
+		while pov: 
 			if ss<20:
 				try:
 					s=client.iter_messages('topretsept')
 					pov=False
 				
-				except Exception:
+				except Exception as dd:
 					ss+=1
+					print(f'Error client.iter_messages : {dd}')
 			else:
 				s=0
 				pov=False
@@ -318,11 +351,11 @@ def timer(vkusno1,add):
     #schedule.every().minute.at(":17").do(job)
     #schedule.every(4).days.at("02:00").do(func)
     #schedule.every().days.at("13:30:00").do(func)
-	schedule.every().day.at("07:14").do(vkusno1)
-	schedule.every().day.at("11:13").do(vkusno1)
-	schedule.every().day.at("16:10").do(vkusno1)
-	schedule.every().day.at("07:17").do(add)
-	schedule.every().day.at("11:17").do(add)
+	schedule.every().day.at("07:01").do(vkusno1)
+	schedule.every().day.at("11:01").do(vkusno1)
+	schedule.every().day.at("16:01").do(vkusno1)
+	schedule.every().day.at("07:16").do(add)
+	schedule.every().day.at("11:15").do(add)
 	schedule.every().day.at("16:15").do(add)
 
 
@@ -346,6 +379,7 @@ if __name__ == '__main__':
 	print('hi')
 	while True:
 		timer(main_vkus,main_add)
+		print('sleep 1200')
 		time.sleep(1200)
 
 	#anekdot()
