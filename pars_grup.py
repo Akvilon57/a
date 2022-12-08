@@ -24,6 +24,12 @@ config.read("config.ini")
 api_id   = config['Telegram']['api_id']
 api_hash = config['Telegram']['api_hash']
 username = config['Telegram']['username']
+
+
+api_id2   = config['Telegram2']['api_id']
+api_hash2 = config['Telegram2']['api_hash']
+username2 = config['Telegram2']['username']
+
 	
 
 grups=['ReceptyKulinariya','zv_kulinariya','retseptyChat','varka01','keto_vkusno','chat_eda','Goa_Food_Cafe_chat']#'chatvkus''ReceptyKulinariya','zv_kulinariya','retseptyChat','varka01','keto_vkusno','chat_eda','Goa_Food_Cafe_chat'
@@ -67,8 +73,10 @@ def iduser():
 
 # 	Добавление юзеров в группу
 def add_user():
+	print(api_id2)
 	client = TelegramClient('bos', api_id, api_hash)
 	client.start()
+
 	with open("rassilka.json", 'r+',encoding='utf-8') as fe:
 		f=json.load(fe)
 		print(len(f))
@@ -79,16 +87,18 @@ def add_user():
 			json.dump(f, fe)
 			fe.close()
 			print('Spisok pust')
-
+			
 		else:
 			print('start')
 	
 			try:
-				us=random.randint(10,20)
+				us=random.randint(40,45)
 				for userss in f[:us]:
 					try:
-						client(InviteToChannelRequest(channel='vkusno_poest_recepti', users = [userss]))
+						client.send_message(userss, 'https://t.me/+Y2afQsZQfNo2ZDYy' )  # От 200 и выше
+						#client(InviteToChannelRequest(channel='vkusno_poest_recepti', users = [userss])) # До двухсот пользователей
 						print(userss)
+						time.sleep(20)
 					except Exception as ow:
 						print(f'{userss}:{ow}')
 						time.sleep(us)
@@ -262,7 +272,7 @@ def anekdot():
 		while go:
 			numb=len(vkusno)-1-key
 			i=vkusno[numb]
-			#print('go')
+			print('go')
 			i=str(i.text).replace('▶️','').replace(f'@{channnel}','https://t.me/anekdot_days')
 			if 'https://t.me/anekdot_days' not in i:
 				i=f'{i}\n\nhttps://t.me/anekdot_days'
@@ -341,7 +351,7 @@ def anekdot():
 
 #telethon_on(vkusno_poest())
 
-def timer(vkusno1,add):
+def timer(vkusno1):
     
     #schedule.every(2).minutes.do(func)
     #schedule.every().hour.do(job)
@@ -354,9 +364,9 @@ def timer(vkusno1,add):
 	schedule.every().day.at("07:01").do(vkusno1)
 	schedule.every().day.at("11:01").do(vkusno1)
 	schedule.every().day.at("16:01").do(vkusno1)
-	schedule.every().day.at("07:16").do(add)
-	schedule.every().day.at("11:15").do(add)
-	schedule.every().day.at("16:15").do(add)
+	#schedule.every().day.at("07:16").do(add)
+	#schedule.every().day.at("11:15").do(add)
+	#schedule.every().day.at("16:15").do(add)
 
 
 	while True:
@@ -375,10 +385,12 @@ def main_add():
 	except Exception as d:
 		print(f'add_user :{d}')
 
+
+
 if __name__ == '__main__': 	
 	print('hi')
 	while True:
-		timer(main_vkus,main_add)
+		timer(main_vkus)
 		print('sleep 1200')
 		time.sleep(1200)
 
