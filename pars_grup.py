@@ -26,9 +26,9 @@ api_hash = config['Telegram']['api_hash']
 username = config['Telegram']['username']
 
 
-api_id2   = config['Telegram2']['api_id']
-api_hash2 = config['Telegram2']['api_hash']
-username2 = config['Telegram2']['username']
+#api_id2   = config['Telegram2']['api_id']
+#api_hash2 = config['Telegram2']['api_hash']
+#username2 = config['Telegram2']['username']
 
 	
 
